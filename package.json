@@ -1,0 +1,23 @@
+{
+  "name": "hamburgueria",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./styles/style.css -o ./styles/output.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ViniciusMarquesz/menuHamburgueria.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ViniciusMarquesz/menuHamburgueria/issues"
+  },
+  "homepage": "https://github.com/ViniciusMarquesz/menuHamburgueria#readme",
+  "description": "",
+  "devDependencies": {
+    "tailwindcss": "^3.4.19"
+  }
+}

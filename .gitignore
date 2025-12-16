@@ -1,0 +1,10 @@
+# Dependências
+node_modules/
+
+# Build do Tailwind (opcional, veja abaixo)
+# styles/output.css
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

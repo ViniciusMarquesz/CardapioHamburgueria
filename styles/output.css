@@ -782,6 +782,14 @@ video {
   margin-top: 2.25rem;
 }
 
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
+
+.mb-60 {
+  margin-bottom: 15rem;
+}
+
 .box-border {
   box-sizing: border-box;
 }
@@ -2111,12 +2119,21 @@ video {
   padding-bottom: 0.5rem;
 }
 
-.pb-12 {
-  padding-bottom: 3rem;
+.py-3 {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
 }
 
-.pb-14 {
-  padding-bottom: 3.5rem;
+.pb-\[calc\(6rem\+env\(safe-area-inset-bottom\)\)\] {
+  padding-bottom: calc(6rem + env(safe-area-inset-bottom));
+}
+
+.pb-\[env\(safe-area-inset-bottom\)\] {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.pb-2 {
+  padding-bottom: 0.5rem;
 }
 
 .text-left {

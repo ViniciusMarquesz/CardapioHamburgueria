@@ -22,7 +22,7 @@
     <title>Menu Hamburgueria</title>
     <link rel="stylesheet" href="./styles/output.css" />
   </head>
-  <body class="pb-24">
+  <body class="pb-[calc(6rem+env(safe-area-inset-bottom))]">
     <!-- HEADER -->
     <header class="w-full h-[420px] bg-zinc-900 bg-home">
       <div class="w-full h-full flex flex-col justify-center items-center">
@@ -246,7 +246,7 @@
     </div>
 
     <div
-      class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-14"
+      class="grid grid-cols-1 md:grid-cols-2 gap-7 md:gap-10 mx-auto max-w-7xl px-2 mb-4"
     >
       <!-- Produto Item -->
       <div class="flex gap-2">
@@ -447,10 +447,10 @@
 
     <!-- Button cart footer -->
     <footer
-      class="w-full bg-red-500 py-2 fixed bottom-0 z-40 flex items-center justify-center"
+      class="w-full bg-red-500 py-2 pb-[env(safe-area-inset-bottom)] fixed bottom-0 z-40 flex items-center justify-center"
     >
       <button
-        class="flex items-center gap-2 text-white font-bold"
+        class="flex items-center gap-2 pb-2 text-white font-bold"
         id="cart-btn"
       >
         (<span id="cart-count">0</span>) Veja meu carrinho

@@ -41,7 +41,6 @@ menu.addEventListener("click", (event) => {
   const price = Number(parentButton.getAttribute("data-price"));
   const image = parentButton.getAttribute("data-image");
 
-
   addToCart(name, price, image);
 });
 
@@ -95,7 +94,7 @@ function updateCartModal() {
       <p class="text-sm text-gray-600">
         ${item.price.toLocaleString("pt-BR", {
           style: "currency",
-          currency: "BRL"
+          currency: "BRL",
         })}
       </p>
     </div>
@@ -116,7 +115,6 @@ function updateCartModal() {
 
   </div>
 `;
-
 
     cartItemsContainer.appendChild(cartItemElement);
   });
@@ -190,80 +188,90 @@ checkoutBtn.addEventListener("click", () => {
     Toastify({
       text: "O restaurante está fechado",
       duration: 3000,
-      destination: "https://github.com/apvarun/toastify-js",
-      newWindow: true,
       close: true,
-      gravity: "top", // `top` or `bottom`
-      position: "right", // `left`, `center` or `right`
-      stopOnFocus: true, // Prevents dismissing of toast on hover
-      style: {
-        background: "#ef4444",
-      },
+      gravity: "top",
+      position: "right",
+      style: { background: "#ef4444" },
     }).showToast();
     return;
   }
 
   if (cart.length === 0) return;
 
-  if (addressInput.value.trim() === "") {
+  // 🔹 Tipo do pedido
+  const orderType = document.querySelector(
+    'input[name="orderType"]:checked'
+  )?.value;
+
+  // 🔹 Validação do endereço (somente se for entrega)
+  if (orderType === "Entrega" && addressInput.value.trim() === "") {
     addressWarn.classList.remove("hidden");
     addressInput.classList.add("border-red-500");
     return;
   }
 
+  if (orderType === "Retirada") {
+    addressInput.value = "";
+  }
+
+  // 🔹 Itens do carrinho
   const cartItems = cart
-    .map((item) => {
-      return `- ${item.name}
-Qtd: ${item.quantity}
+    .map(
+      (item) => `- ${item.name}
+Quantidade: ${item.quantity}
 Preço: ${item.price.toLocaleString("pt-BR", {
         style: "currency",
         currency: "BRL",
-      })}
-`;
-    })
-    .join("\n");
+      })}`
+    )
+    .join("\n\n");
 
-  // Total
-  const total = cart.reduce((acc, item) => {
-    return acc + item.price * item.quantity;
-  }, 0);
+  // 🔹 Total
+  const total = cart.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
 
-  // Endereço
-  const address = addressInput.value.trim();
+  const orderId = Math.floor(Math.random() * 90000) + 10000;
 
+  // 🔹 Mensagem final
   const message = encodeURIComponent(
-    `Pedido Vm Burger
+    `PEDIDO VM BURGER
+Pedido Nº: ${orderId}
 
-Itens:
+TIPO DO PEDIDO: ${orderType}
+
+--------------------------------
+ITENS DO PEDIDO
+--------------------------------
 ${cartItems}
-Total: ${total.toLocaleString("pt-BR", {
+
+--------------------------------
+TOTAL: ${total.toLocaleString("pt-BR", {
       style: "currency",
       currency: "BRL",
     })}
 
-Endereço de entrega:
-${address}
+${orderType === "Entrega" ? `ENDEREÇO DE ENTREGA:\n${addressInput.value}` : ""}
+
+--------------------------------
+Pedido gerado em: ${new Date().toLocaleString("pt-BR")}
 `
   );
 
   const phone = "16991215014";
-
   window.open(`https://wa.me/${phone}?text=${message}`);
 
   Toastify({
     text: "Pedido enviado com sucesso",
     duration: 3000,
-    destination: "https://github.com/apvarun/toastify-js",
-    newWindow: true,
     close: true,
-    gravity: "top", // `top` or `bottom`
-    position: "right", // `left`, `center` or `right`
-    stopOnFocus: true, // Prevents dismissing of toast on hover
-    style: {
-      background: "#ef4444",
-    },
+    gravity: "top",
+    position: "right",
+    style: { background: "#22c55e" },
   }).showToast();
 
+  // 🔹 Limpar carrinho
   cart = [];
   updateCartModal();
   cartCounter.textContent = 0;
@@ -271,6 +279,7 @@ ${address}
 
   closeCartModal();
 });
+
 
 // Horário de funcionamento
 function checkRestaurantOpen() {

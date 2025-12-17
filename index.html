@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css"
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -76,6 +80,7 @@
                 class="bg-gray-900 px-5 rounded add-to-cart-btn"
                 data-name="Hamburguer Smash"
                 data-price="18.90"
+                data-image="./assets/hamb-1.png"
               >
                 <i class="fa fa-cart-plus text-lg text-white"></i>
               </button>
@@ -417,30 +422,82 @@
       class="bg-black/60 w-full h-full fixed top-0 left-0 z-[99] hidden items-center justify-center"
       id="cart-modal"
     >
-      <div class="bg-white p-5 rounded-md w-[90%] max-w-[600px]
-         max-h-[85vh] flex flex-col">
-        <h2 class="text-center font-bold text-2xl mb-2">Meu carrinho</h2>
+      <div
+        class="bg-white p-5 rounded-xl w-[95%] max-w-[600px] max-h-[85vh] flex flex-col shadow-lg"
+      >
+        <h2 class="text-center font-bold text-2xl mb-4">Meu carrinho</h2>
 
-        <div id="cart-items" class="flex justify-between mb-2 flex-col gap-4 overflow-y-auto flex-1"></div>
+        <!-- Lista de itens -->
+        <div
+          id="cart-items"
+          class="flex flex-col gap-4 overflow-y-auto flex-1 pr-2"
+        ></div>
 
-        <p class="font-bold">Total <span id="cart-total">0.00</span></p>
+        <!-- Total -->
+        <div class="flex justify-between font-bold text-lg mt-4">
+          <span>Total</span>
+          <span id="cart-total">R$ 0,00</span>
+        </div>
 
-        <p class="font-bold mt-4">Endereço de entrega:</p>
-        <input
-          type="text"
-          placeholder="Digite o seu endereço completo..."
-          id="address"
-          class="w-full border-2 p-1 rounded my-1"
-        />
-        <p class="text-red-500 hidden" id="address-warn">
-          Digite seu endereço completo!
-        </p>
+        <!-- Tipo de pedido -->
+        <div class="mt-4">
+          <p class="font-bold mb-2">Tipo de pedido</p>
 
-        <div class="flex items-center justify-between mt-4 w-full">
-          <button id="close-modal-btn">Fechar</button>
+          <div class="flex gap-8 mt-2">
+            <label class="flex items-center gap-2">
+              <input type="radio" name="orderType" value="Entrega" checked />
+              Entrega
+            </label>
+
+            <label class="flex items-center gap-2">
+              <input type="radio" name="orderType" value="Retirada" />
+              Retirada
+            </label>
+          </div>
+        </div>
+
+        <!-- Endereço -->
+        <div class="mt-4" id="address-container">
+          <p class="font-bold">Endereço de entrega</p>
+          <input
+            type="text"
+            id="address"
+            placeholder="Digite seu endereço completo..."
+            class="w-full border-2 p-2 rounded mt-1"
+          />
+          <p class="text-red-500 hidden" id="address-warn">
+            Digite seu endereço completo!
+          </p>
+        </div>
+
+        <!-- Pagamento -->
+        <div class="mt-4">
+          <p class="font-bold mb-2">Forma de pagamento</p>
+
+          <select id="payment-method" class="w-full border-2 p-2 rounded">
+            <option value="Pix">Pix</option>
+            <option value="Dinheiro">Dinheiro</option>
+          </select>
+        </div>
+
+        <!-- Troco -->
+        <div class="mt-3 hidden" id="change-container">
+          <p class="font-bold">Troco para quanto?</p>
+          <input
+            type="number"
+            id="change"
+            class="w-full border-2 p-2 rounded"
+            placeholder="Ex: 50"
+          />
+        </div>
+
+        <!-- Botões -->
+        <div class="flex justify-between items-center mt-5">
+          <button id="close-modal-btn" class="text-gray-600">Fechar</button>
+
           <button
             id="checkout-btn"
-            class="bg-green-500 text-white px-4 py-1 rounded"
+            class="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold"
           >
             Finalizar pedido
           </button>
@@ -465,7 +522,10 @@
     </footer>
     <!-- Button cart footer -->
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/toastify-js"
+    ></script>
     <script src="script.js"></script>
   </body>
 </html>

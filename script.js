@@ -39,11 +39,13 @@ menu.addEventListener("click", (event) => {
 
   const name = parentButton.getAttribute("data-name");
   const price = Number(parentButton.getAttribute("data-price"));
+  const image = parentButton.getAttribute("data-image");
 
-  addToCart(name, price);
+
+  addToCart(name, price, image);
 });
 
-function addToCart(name, price) {
+function addToCart(name, price, image) {
   const existingItem = cart.find((item) => item.name === name);
 
   if (existingItem) {
@@ -52,6 +54,7 @@ function addToCart(name, price) {
     cart.push({
       name,
       price,
+      image,
       quantity: 1,
     });
   }
@@ -59,9 +62,7 @@ function addToCart(name, price) {
   updateCartModal();
 }
 
-// =======================
 // Atualizar carrinho
-// =======================
 function updateCartModal() {
   cartItemsContainer.innerHTML = "";
 
@@ -81,23 +82,41 @@ function updateCartModal() {
     );
 
     cartItemElement.innerHTML = `
-      <div class="flex items-center justify-between">
-        <div>
-          <p class="font-medium">${item.name}</p>
-          <p>Qtd: ${item.quantity}</p>
-          <p class="font-medium mt-2">
-            ${item.price.toLocaleString("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            })}
-          </p>
-        </div>
+  <div class="flex items-center gap-3">
 
-        <button class="remove-cart" data-name="${item.name}">
-          Remover
-        </button>
-      </div>
-    `;
+    <img
+      src="${item.image}"
+      alt="${item.name}"
+      class="w-16 h-16 rounded object-cover"
+    />
+
+    <div class="flex-1">
+      <p class="font-medium">${item.name}</p>
+      <p class="text-sm text-gray-600">
+        ${item.price.toLocaleString("pt-BR", {
+          style: "currency",
+          currency: "BRL"
+        })}
+      </p>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <button
+        class="decrease bg-red-500 text-white w-8 h-8 rounded transition active:scale-90"
+        data-name="${item.name}"
+      >−</button>
+
+      <span class="font-bold">${item.quantity}</span>
+
+      <button
+        class="increase bg-green-500 text-white w-8 h-8 rounded transition active:scale-90"
+        data-name="${item.name}"
+      >+</button>
+    </div>
+
+  </div>
+`;
+
 
     cartItemsContainer.appendChild(cartItemElement);
   });
@@ -110,27 +129,51 @@ function updateCartModal() {
   cartCounter.textContent = totalItems;
 }
 
-// Remover item
 cartItemsContainer.addEventListener("click", (event) => {
-  if (!event.target.classList.contains("remove-cart")) return;
+  const name = event.target.dataset.name;
+  if (!name) return;
 
-  const name = event.target.getAttribute("data-name");
-  removeItemCart(name);
-});
+  if (event.target.classList.contains("increase")) {
+    const item = cart.find((i) => i.name === name);
+    item.quantity += 1;
+  }
 
-function removeItemCart(name) {
-  const index = cart.findIndex((item) => item.name === name);
+  if (event.target.classList.contains("decrease")) {
+    const item = cart.find((i) => i.name === name);
 
-  if (index === -1) return;
-
-  if (cart[index].quantity > 1) {
-    cart[index].quantity -= 1;
-  } else {
-    cart.splice(index, 1);
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      cart = cart.filter((i) => i.name !== name);
+    }
   }
 
   updateCartModal();
-}
+});
+
+const paymentSelect = document.getElementById("payment-method");
+const changeContainer = document.getElementById("change-container");
+
+paymentSelect.addEventListener("change", () => {
+  if (paymentSelect.value === "Dinheiro") {
+    changeContainer.classList.remove("hidden");
+  } else {
+    changeContainer.classList.add("hidden");
+  }
+});
+
+const orderTypeRadios = document.querySelectorAll('input[name="orderType"]');
+const addressContainer = document.getElementById("address-container");
+
+orderTypeRadios.forEach((radio) => {
+  radio.addEventListener("change", () => {
+    if (radio.value === "Retirada" && radio.checked) {
+      addressContainer.classList.add("hidden");
+    } else {
+      addressContainer.classList.remove("hidden");
+    }
+  });
+});
 
 // Endereço
 addressInput.addEventListener("input", (event) => {
@@ -234,7 +277,7 @@ function checkRestaurantOpen() {
   const data = new Date();
   const hora = data.getHours();
 
-  return hora >= 18 && hora < 22;
+  return hora >= 12 && hora < 22;
 }
 
 const spanItem = document.getElementById("date-span");
